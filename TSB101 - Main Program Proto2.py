@@ -7,7 +7,7 @@ import numpy as np
 import sys
 from PyQt5 import QtWidgets,QtCore,QtGui
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QAction, QVBoxLayout, QHBoxLayout,QGridLayout, QLabel, QLineEdit, QSpacerItem, QSizePolicy, QPushButton, QFrame
+from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QAction, QVBoxLayout, QHBoxLayout,QGridLayout, QLabel, QLineEdit, QSpacerItem, QSizePolicy, QPushButton, QFrame, QStackedWidget
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT as NavigationToolbar
 import matplotlib.pyplot as plt
 
@@ -192,8 +192,6 @@ class Portfolio(QWidget):
         real_return_value2.setGeometry(730, 70, 61, 21)
 
 
-
-
 class Dashboard(QWidget):
     def __init__(self, *args, **kwargs):
         QWidget.__init__(self, *args, **kwargs)
@@ -233,265 +231,66 @@ class Dashboard(QWidget):
         LearningCentreButton.setStyleSheet("background-color : cyan")
         PortfolioButton.setStyleSheet("background-color : cyan")
 
-        StockFinderButton.clicked.connect(lambda: self.setCentralWidget(StockFinderObject)) #connecting buttons to the widgets
-        PortfolioObject = Portfolio(self)
-        PortfolioButton.clicked.connect(lambda: self.setCentralWidget(PortfolioObject))     #so that when the user clicks on the
-        LearningCentreButton.clicked.connect(lambda: self.setCentralWidget(LearningCentreObject)) #buttons the screen will change
+    class MyWindow(QMainWindow):
+        # inherits all of properties from QMainWindow
+        def __init__(self):
+            super(MyWindow, self).__init__()
+            # will run whenever an instance of MyWindow is created
+            self.setGeometry(100, 100, 800, 600)
+            # 4 arguments - (x position, y position, width,height)
+            self.setWindowTitle("TSB101")
+            self.initializeUi()
 
+        def initializeUi(self):
+            #sets up the user interface and creates buttons
+            layout = QVBoxLayout()
+            main_title = QLabel("Trading Simulator For Beginners 101", self)
+            secondary_label = QLabel("", self)
 
-    def portfolio(self):
-        self.PortfolioButton.hide()
-        self.StockFinderButton.hide()
-        self.LearningCentreButton.hide()
-        self.main_title.setText("Portfolio")
-        self.main_title.setGeometry(QtCore.QRect(350, 10, 191, 41))
-        self.main_title.adjustSize()
-        self.secondary_label.setGeometry(QtCore.QRect(40, 65, 111, 21))
-        self.secondary_label.setText("Account value:")
-        self.update_secondary()
-        self.stock_finder_image.setGeometry(QtCore.QRect(160, 70, 91, 21))
-        self.stock_finder_image.setText("£20,000")
-        self.portfolio_image.setGeometry(QtCore.QRect(420, 70, 101, 21))
-        self.portfolio_image.setText("Free funds:")
-        self.learning_centre_image.setGeometry(QtCore.QRect(330, 70, 61, 21))
-        self.learning_centre_image.setText("£10,000")
-        self.label_4 = QtWidgets.QLabel(self.centralwidget)
-        self.label_4.setGeometry(QtCore.QRect(250, 70, 71, 21))
-        self.label_4.setText("Invested:")
-        self.label_7 = QtWidgets.QLabel(self.centralwidget)
-        self.label_7.setGeometry(QtCore.QRect(510, 70, 61, 21))
-        self.label_7.setText("£5,000")
-        self.label_8 = QtWidgets.QLabel(self.centralwidget)
-        self.label_8.setGeometry(QtCore.QRect(590, 70, 71, 21))
-        self.label_8.setText( "Return:")
-        self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(650, 70, 81, 21))
-        self.label.setText("+£10,000:")
-        self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(730, 70, 61, 21))
-        self.label_2.setText("(50%)")
-        self.secondary_label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.secondary_label_2.setGeometry(QtCore.QRect(20, 120, 771, 21))
-        self.secondary_label_2.setText("Stock     |      Quantity     |     Purchase Price     |    Current Price   |   Total Value   |   Today\'s Change     |     Total Gain /Loss  ")
-        self.label_9 = QtWidgets.QLabel(self.centralwidget)
-        self.label_9.setGeometry(QtCore.QRect(20, 170, 47, 13))
-        self.label_9.setText("GOOG")
-        self.label_10 = QtWidgets.QLabel(self.centralwidget)
-        self.label_10.setGeometry(QtCore.QRect(20, 220, 47, 13))
-        self.label_10.setText("AML.L")
-        self.label_11 = QtWidgets.QLabel(self.centralwidget)
-        self.label_11.setGeometry(QtCore.QRect(20, 270, 47, 13))
-        self.label_11.setText("TSLA")
-        self.label_12 = QtWidgets.QLabel(self.centralwidget)
-        self.label_12.setGeometry(QtCore.QRect(100, 170, 661, 16))
-        self.label_12.setText("         10                    £3.50                      £4.00                     £40.00                   +0.1")
-        self.label_13 = QtWidgets.QLabel(self.centralwidget)
-        self.label_13.setGeometry(QtCore.QRect(80, 220, 661, 16))
-        self.label_13.setText("             10                      £3.50                   £4.00                    £40.00                   +0.1")
-        self.label_14 = QtWidgets.QLabel(self.centralwidget)
-        self.label_14.setGeometry(QtCore.QRect(100, 270, 651, 16))
-        self.label_14.setText("         10                     £3.50                    £4.00                   £40.00                    +0.1")
-        self.line = QtWidgets.QFrame(self.centralwidget)
-        self.line.setGeometry(QtCore.QRect(20, 90, 791, 20))
-        self.line.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.line_2 = QtWidgets.QFrame(self.centralwidget)
-        self.line_2.setGeometry(QtCore.QRect(20, 60, 791, 16))
-        self.line_2.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line_2.setFrameShadow(QtWidgets.QFrame.Sunken)
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.secondary_label.setFont(font)
-        self.secondary_label_2.setFont(font)
-        self.label.setFont(font)
-        self.label_4.setFont(font)
-        self.label_7.setFont(font)
-        self.label_8.setFont(font)
-        self.label_2.setFont(font)
-        self.label_14.setFont(font)
-        self.label_13.setFont(font)
-        self.label_12.setFont(font)
-        self.secondary_label_2.setFont(font)
-        self.learning_centre_image.setFont(font)
-        self.portfolio_image.setFont(font)
-        self.stock_finder_image.setFont(font)
-        self.label_9.setFont(font)
-        self.label_10.setFont(font)
-        self.label_11.setFont(font)
-        self.label.show()
-        self.label_4.show()
-        self.label_7.show()
-        self.label_8.show()
-        self.label_2.show()
-        self.label_9.show()
-        self.label_14.show()
-        self.label_13.show()
-        self.label_11.show()
-        self.label_12.show()
-        self.label_10.show()
-        self.secondary_label_2.show()
-        self.line.show()
-        self.line_2.show()
+            font2(self, secondary_label, main_title) # setting fonts for main-title and secondary label
 
-class MyWindow(QMainWindow):
-    # inherits all of properties from QMainWindow
-    def __init__(self):
-        super(MyWindow, self).__init__()
-        # will run whenever an instance of MyWindow is created
-        self.setGeometry(100, 100, 800, 600)
-        # 4 arguments - (x position, y position, width,height)
-        self.setWindowTitle("TSB101")
-        self.initializeUi()
+            LogButton = QPushButton("Log-in", self)  # creating Log-in,Sign-up and Exit Buttons
+            SignButton = QPushButton("Sign-up", self)
+            ExitButton = QPushButton("Exit", self)
 
+            LogButton.setStyleSheet("background-color : cyan")  # making Log-in,Sign-up and Exit Buttons blue
+            SignButton.setStyleSheet("background-color : cyan")
+            ExitButton.setStyleSheet("background-color : cyan")
 
-    def initializeUi(self):
-        #sets up the user interface and creates buttons
-        layout = QVBoxLayout()
-        main_title = QLabel("Trading Simulator For Beginners 101", self)
-        secondary_label = QLabel("", self)
+            LogButton.setFixedSize(131, 51) #setting size of buttons
+            SignButton.setFixedSize(131, 51)
+            ExitButton.setFixedSize(131, 51)
 
-        font2(self, secondary_label, main_title) # setting fonts for main-title and secondary label
+            #what happens when buttons clicked
+            ExitButton.clicked.connect(self.close) # closes the program
 
-        LogButton = QPushButton("Log-in", self)  # creating Log-in,Sign-up and Exit Buttons
-        SignButton = QPushButton("Sign-up", self)
-        ExitButton = QPushButton("Exit", self)
+            # what happens when buttons clicked
+            # lambda function (sometimes called a mini function)
+            # lambda allows us to take multiple arguments on the same line
+            LogInObject = Log_In(self) #creating Log_In object
+            LogButton.clicked.connect(lambda: self.setCentralWidget(stackedwidget)) #connecting Log_In Object to Sign-Up Button
 
-        LogButton.setStyleSheet("background-color : cyan")  # making Log-in,Sign-up and Exit Buttons blue
-        SignButton.setStyleSheet("background-color : cyan")
-        ExitButton.setStyleSheet("background-color : cyan")
+            SignUpObject = Sign_Up(self) #creating Sign_Up object
+            SignButton.clicked.connect(lambda: self.setCentralWidget(SignUpObject)) #connecting SignUp Object to Sign-Up Button
 
-        LogButton.setFixedSize(131, 51) #setting size of buttons
-        SignButton.setFixedSize(131, 51)
-        ExitButton.setFixedSize(131, 51)
+            layout.addWidget(main_title)
+            layout.addWidget(secondary_label)
+            layout.addStretch()
+            layout.addWidget(LogButton)
+            layout.addWidget(SignButton)
+            layout.addWidget(ExitButton)
+            layout.addStretch()
 
-        #what happens when buttons clicked
-        ExitButton.clicked.connect(self.close) # closes the program
+            main = QWidget()
+            main.setLayout(layout)
+            self.setCentralWidget(main)
 
-        # what happens when buttons clicked
-        # lambda function (sometimes called a mini function)
-        # lambda allows us to take multiple arguments on the same line
-        LogInObject = Log_In(self) #creating Log_In object
-        DashboardObject = Dashboard(self)
-        LogButton.clicked.connect(lambda: self.setCentralWidget(DashboardObject)) #connecting Log_In Object to Sign-Up Button
+            stackedwidget = QStackedWidget(self)
+            DashboardWidget = Dashboard(self)
+            PortfolioWidget = Portfolio(self)
 
-        SignUpObject = Sign_Up(self) #creating Sign_Up object
-        SignButton.clicked.connect(lambda: self.setCentralWidget(SignUpObject)) #connecting SignUp Object to Sign-Up Button
+            stackedwidget.addWidget(DashboardWidget)
+            stackedwidget.addWidget(PortfolioWidget)
 
-        layout.addWidget(main_title)
-        layout.addWidget(secondary_label)
-        layout.addStretch()
-        layout.addWidget(LogButton)
-        layout.addWidget(SignButton)
-        layout.addWidget(ExitButton)
-        layout.addStretch()
-
-        main = QWidget()
-        main.setLayout(layout)
-        self.setCentralWidget(main)
-
-    def individual_stock(self):
-        self.GOOGButton.hide()
-        self.AMLButton.hide()
-        self.TSLAButton.hide()
-        self.stock_finder_image.hide()
-        self.portfolio_image.hide()
-        self.learning_centre_image.hide()
-
-        # a figure instance to plot on
-        self.figure = plt.figure()
-
-        # this is the Canvas Widget that
-        # displays the 'figure'it takes the
-        # 'figure' instance as a parameter to __init__
-        self.canvas = FigureCanvas(self.figure)
-
-        # this is the Navigation widget
-        # it takes the Canvas widget and a parent
-        self.toolbar = NavigationToolbar(self.canvas, self)
-
-        # Just some button connected to 'plot' method
-        self.button = QtWidgets.QPushButton(self.centralwidget)
-
-        # adding action to the button
-        self.button.clicked.connect(self.plot)
-
-        # creating a Vertical Box layout
-        layout = QVBoxLayout()
-
-        # adding tool bar to the layout
-        layout.addWidget(self.toolbar)
-
-        # adding canvas to the layout
-        layout.addWidget(self.canvas)
-
-        # adding push button to the layout
-        layout.addWidget(self.button)
-
-        # setting layout to the main window
-        self.setLayout(layout)
-
-        # action called by thte push button
-
-    def plot(self):
-        # random data
-        data = [random.random() for i in range(10)]
-
-        # clearing old figure
-        self.figure.clear()
-
-        # create an axis
-        ax = self.figure.add_subplot(111)
-
-        # plot data
-        ax.plot(data, '*-')
-
-        # refresh canvas
-        self.canvas.draw()
-
-    def stock_finder(self):
-        self.PortfolioButton.hide()
-        self.StockFinderButton.hide()
-        self.LearningCentreButton.hide()
-        self.main_title.setText("Stock Finder")
-        self.main_title.adjustSize()
-        self.secondary_label.setText("Welcome to the Stock Finder - this is where you can choose stock to buy and sell!")
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.secondary_label.setFont(font)
-        self.update_secondary()
-        self.secondary_label.setGeometry(QtCore.QRect(80, 70, 541, 81))
-        self.GOOGButton = QtWidgets.QPushButton(self.centralwidget)
-        self.GOOGButton.setGeometry(QtCore.QRect(20, 190, 93, 28))
-        self.GOOGButton.setText("GOOG")
-        self.AMLButton = QtWidgets.QPushButton(self.centralwidget)
-        self.AMLButton.setGeometry(QtCore.QRect(20, 250, 93, 28))
-        self.AMLButton.setText("AML.L")
-        self.TSLAButton = QtWidgets.QPushButton(self.centralwidget)
-        self.TSLAButton.setGeometry(QtCore.QRect(20, 310, 93, 28))
-        self.TSLAButton.setText("TSLA")
-        self.stock_finder_image.setText("Alphabet Inc. (Google)")
-        self.stock_finder_image.setGeometry(QtCore.QRect(150, 200, 161, 16))
-        self.portfolio_image.setText("Aston Martin Lagonda Global Holdings plc")
-        self.portfolio_image.setGeometry(QtCore.QRect(140, 260, 281, 16))
-        self.learning_centre_image.setText("Tesla, Inc")
-        self.learning_centre_image.setGeometry(QtCore.QRect(140, 315, 281, 16))
-
-        # makes the buttons blue
-        self.GOOGButton.setStyleSheet("background-color : cyan")
-        self.AMLButton.setStyleSheet("background-color : cyan")
-        self.TSLAButton.setStyleSheet("background-color : cyan")
-
-        self.GOOGButton.show()
-        self.AMLButton.show()
-        self.TSLAButton.show()
-
-def window():
-    #driver code
-    app = QApplication(sys.argv)
-    #setting up application
-    window = MyWindow()
-    window.show()
-    sys.exit(app.exec())
-    #clean exit - closing application after Q has been close
-
-window()
+            stackedwidget.setCurrentIndex(0)
+            stackedwidget.setCurrentWidget(DashboardWidget)
