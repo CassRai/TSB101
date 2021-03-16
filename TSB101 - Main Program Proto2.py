@@ -231,66 +231,83 @@ class Dashboard(QWidget):
         LearningCentreButton.setStyleSheet("background-color : cyan")
         PortfolioButton.setStyleSheet("background-color : cyan")
 
-    class MyWindow(QMainWindow):
-        # inherits all of properties from QMainWindow
-        def __init__(self):
-            super(MyWindow, self).__init__()
-            # will run whenever an instance of MyWindow is created
-            self.setGeometry(100, 100, 800, 600)
-            # 4 arguments - (x position, y position, width,height)
-            self.setWindowTitle("TSB101")
-            self.initializeUi()
+class MyWindow(QMainWindow):
+    # inherits all of properties from QMainWindow
+    def __init__(self):
+        super(MyWindow, self).__init__()
+        # will run whenever an instance of MyWindow is created
+        self.setGeometry(100, 100, 800, 600)
+        # 4 arguments - (x position, y position, width,height)
+        self.setWindowTitle("TSB101")
+        self.initializeUi()
 
-        def initializeUi(self):
-            #sets up the user interface and creates buttons
-            layout = QVBoxLayout()
-            main_title = QLabel("Trading Simulator For Beginners 101", self)
-            secondary_label = QLabel("", self)
+    def initializeUi(self):
+        #sets up the user interface and creates buttons
+        layout = QVBoxLayout()
+        main_title = QLabel("Trading Simulator For Beginners 101", self)
+        secondary_label = QLabel("", self)
 
-            font2(self, secondary_label, main_title) # setting fonts for main-title and secondary label
+        font2(self, secondary_label, main_title) # setting fonts for main-title and secondary label
 
-            LogButton = QPushButton("Log-in", self)  # creating Log-in,Sign-up and Exit Buttons
-            SignButton = QPushButton("Sign-up", self)
-            ExitButton = QPushButton("Exit", self)
+        LogButton = QPushButton("Log-in", self)  # creating Log-in,Sign-up and Exit Buttons
+        SignButton = QPushButton("Sign-up", self)
+        ExitButton = QPushButton("Exit", self)
 
-            LogButton.setStyleSheet("background-color : cyan")  # making Log-in,Sign-up and Exit Buttons blue
-            SignButton.setStyleSheet("background-color : cyan")
-            ExitButton.setStyleSheet("background-color : cyan")
+        LogButton.setStyleSheet("background-color : cyan")  # making Log-in,Sign-up and Exit Buttons blue
+        SignButton.setStyleSheet("background-color : cyan")
+        ExitButton.setStyleSheet("background-color : cyan")
 
-            LogButton.setFixedSize(131, 51) #setting size of buttons
-            SignButton.setFixedSize(131, 51)
-            ExitButton.setFixedSize(131, 51)
+        LogButton.setFixedSize(131, 51) #setting size of buttons
+        SignButton.setFixedSize(131, 51)
+        ExitButton.setFixedSize(131, 51)
 
-            #what happens when buttons clicked
-            ExitButton.clicked.connect(self.close) # closes the program
+        #what happens when buttons clicked
+        ExitButton.clicked.connect(self.close) # closes the program
 
-            # what happens when buttons clicked
-            # lambda function (sometimes called a mini function)
-            # lambda allows us to take multiple arguments on the same line
-            LogInObject = Log_In(self) #creating Log_In object
-            LogButton.clicked.connect(lambda: self.setCentralWidget(stackedwidget)) #connecting Log_In Object to Sign-Up Button
+        # what happens when buttons clicked
+        # lambda function (sometimes called a mini function)
+        # lambda allows us to take multiple arguments on the same line
+        LogInObject = Log_In(self) #creating Log_In object
+        LogButton.clicked.connect(lambda: self.setCentralWidget(stackedwidget)) #connecting Log_In Object to Sign-Up Button
 
-            SignUpObject = Sign_Up(self) #creating Sign_Up object
-            SignButton.clicked.connect(lambda: self.setCentralWidget(SignUpObject)) #connecting SignUp Object to Sign-Up Button
+        SignUpObject = Sign_Up(self) #creating Sign_Up object
+        SignButton.clicked.connect(lambda: self.setCentralWidget(SignUpObject)) #connecting SignUp Object to Sign-Up Button
 
-            layout.addWidget(main_title)
-            layout.addWidget(secondary_label)
-            layout.addStretch()
-            layout.addWidget(LogButton)
-            layout.addWidget(SignButton)
-            layout.addWidget(ExitButton)
-            layout.addStretch()
+        layout.addWidget(main_title)
+        layout.addWidget(secondary_label)
+        layout.addStretch()
+        layout.addWidget(LogButton)
+        layout.addWidget(SignButton)
+        layout.addWidget(ExitButton)
+        layout.addStretch()
 
-            main = QWidget()
-            main.setLayout(layout)
-            self.setCentralWidget(main)
+        main = QWidget()
+        main.setLayout(layout)
+        self.setCentralWidget(main)
 
-            stackedwidget = QStackedWidget(self)
-            DashboardWidget = Dashboard(self)
-            PortfolioWidget = Portfolio(self)
+        stackedwidget = QStackedWidget(self)
+        DashboardWidget = Dashboard(self)
+        PortfolioWidget = Portfolio(self)
 
-            stackedwidget.addWidget(DashboardWidget)
-            stackedwidget.addWidget(PortfolioWidget)
+        stackedwidget.addWidget(DashboardWidget)
+        stackedwidget.addWidget(PortfolioWidget)
 
-            stackedwidget.setCurrentIndex(0)
-            stackedwidget.setCurrentWidget(DashboardWidget)
+        stackedwidget.setCurrentIndex(0)
+        stackedwidget.setCurrentWidget(DashboardWidget)
+
+        DashboardWidget.PortfolioButton.clicked.connect(self.showPortfolio)
+
+    def showPortfolio(self):
+        stackedwidget.setCurrentWidget(PortfolioWidget)
+
+
+def window():
+    #driver code
+    app = QApplication(sys.argv)
+    #setting up application
+    window = MyWindow()
+    window.show()
+    sys.exit(app.exec())
+    #clean exit - closing application after Q has been close
+
+window()
