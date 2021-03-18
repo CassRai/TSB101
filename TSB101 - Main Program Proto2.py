@@ -138,6 +138,7 @@ class Portfolio(QWidget):
         real_return_value1 = QLabel(self)
         real_return_value2 = QLabel(self)
         header = QLabel("Stock     |      Quantity     |     Purchase Price     |    Current Price   |   Total Value   |   Today\'s Change     |     Total Gain /Loss  ",self)
+        header.adjustSize()
         stock1 = QLabel("GOOG", self)
         stock2 = QLabel("AML.L", self)
         stock3 = QLabel("TSLA", self)
@@ -170,7 +171,7 @@ class Portfolio(QWidget):
         stock3_result.setFont(font)
 
         main_title.setGeometry(350, 10, 191, 41)#setting Geometry
-        header.setGeometry(730, 70, 61, 21)
+        header.setGeometry(20, 120, 741, 21)
         stock1.setGeometry(20, 170, 47, 13)
         stock2.setGeometry(20, 220, 47, 13)
         stock3.setGeometry(20, 270, 47, 13)
@@ -214,22 +215,24 @@ class Dashboard(QWidget):
         learning_centre_image.setPixmap(QtGui.QPixmap("images/learning_centre.png"))
         learning_centre_image.setScaledContents(True)
 
-        StockFinderButton = QPushButton("Stock Finder", self) #creating buttons
-        PortfolioButton = QPushButton("Portfolio", self)
-        LearningCentreButton =  QPushButton("Learning Centre", self)
+        self.StockFinderButton = QPushButton("Stock Finder", self) #creating buttons
+        self.PortfolioButton = QPushButton("Portfolio",self)
+        self.LearningCentreButton = QPushButton("Learning Centre", self)
 
         main_title.setGeometry(320,20,231, 51) #setting the positons and sizes for all the labels and buttons
         secondary_label.setGeometry(320, 100, 191, 51)
         stock_finder_image.setGeometry(50, 180, 211, 231)
         portfolio_image.setGeometry(320, 180, 181, 231)
         learning_centre_image.setGeometry(560, 180, 181, 231)
-        StockFinderButton.setGeometry(80, 440, 131, 41)
-        PortfolioButton.setGeometry(340, 440, 131, 41)
-        LearningCentreButton.setGeometry(590, 440, 131, 41)
+        self.StockFinderButton.setGeometry(80, 440, 131, 41)
+        self.PortfolioButton.setGeometry(340, 440, 131, 41)
+        self.LearningCentreButton.setGeometry(590, 440, 131, 41)
 
-        StockFinderButton.setStyleSheet("background-color : cyan") #setting the colours for the buttons
-        LearningCentreButton.setStyleSheet("background-color : cyan")
-        PortfolioButton.setStyleSheet("background-color : cyan")
+        self.StockFinderButton.setStyleSheet("background-color : cyan") #setting the colours for the buttons
+        self.LearningCentreButton.setStyleSheet("background-color : cyan")
+        self.PortfolioButton.setStyleSheet("background-color : cyan")
+
+
 
 class MyWindow(QMainWindow):
     # inherits all of properties from QMainWindow
@@ -291,14 +294,16 @@ class MyWindow(QMainWindow):
 
         stackedwidget.addWidget(DashboardWidget)
         stackedwidget.addWidget(PortfolioWidget)
+        stackedwidget.addWidget(LogInObject)
+        stackedwidget.addWidget(SignUpObject)
 
         stackedwidget.setCurrentIndex(0)
         stackedwidget.setCurrentWidget(DashboardWidget)
 
-        DashboardWidget.PortfolioButton.clicked.connect(self.showPortfolio)
+        DashboardWidget.PortfolioButton.clicked.connect(lambda: stackedwidget.setCurrentIndex(1))
+        DashboardWidget.StockFinderButton.clicked.connect(lambda: stackedwidget.setCurrentIndex(2))
+        DashboardWidget.LearningCentreButton.clicked.connect(lambda: stackedwidget.setCurrentIndex(3))
 
-    def showPortfolio(self):
-        stackedwidget.setCurrentWidget(PortfolioWidget)
 
 
 def window():
